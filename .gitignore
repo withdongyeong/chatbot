@@ -4,6 +4,9 @@ venv
 # runs
 runs
 
+# test
+test
+
 # install data
 installData
 
