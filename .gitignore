@@ -1,6 +1,12 @@
 # venv
 venv
 
+# runs
+runs
+
+# install data
+installData
+
 # ide
 .idea
 
