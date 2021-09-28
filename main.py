@@ -275,7 +275,17 @@ class Messenger(QWidget):
                            + "RAM : " + self.requirements[self.customEncoding[label]]['권장사양']['RAM'] + "이야")
 
     def callPredict(self, text):
-        pr = predict(text, 0)
+        pr, score = predict(text, 0)
+        if score < 0.95:
+            case = random.randint(1, 3)
+            if case == 1:
+                self.addMessageBot("미안해 잘 모르겠어")
+            elif case == 2:
+                self.addMessageBot("다시 말해줄래?")
+            else:
+                self.addMessageBot("이해 못 했어")
+            return
+        
         if pr == 0:
             self.addMessageBot(self.customEncoding[pr] + " 컴퓨터 알려줄까?")
             self.addMessageBot("지금 사용중인 스펙은\n"
