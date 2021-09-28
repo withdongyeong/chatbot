@@ -107,11 +107,6 @@ class Messenger(QWidget):
         self.chatLayout.addWidget(self.chatbox)
         self.chatButtonLayout = QHBoxLayout()
 
-        # mic button
-        self.chatMicButton = QPushButton("Mic")
-        self.chatMicButton.clicked.connect(self.mic)
-        self.chatButtonLayout.addWidget(self.chatMicButton)
-
         # enter button
         self.chatEnterButton = QPushButton("Enter")
         self.chatEnterButton.clicked.connect(self.enter)
