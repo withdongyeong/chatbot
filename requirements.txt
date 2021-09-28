@@ -8,3 +8,7 @@ konlpy
 # need to downgrade tweepy
 tweepy==3.7
 chardet
+
+selenium
+chromedriver_autoinstaller
+
