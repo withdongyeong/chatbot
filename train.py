@@ -17,6 +17,17 @@ from nlpModel import LSTM
 
 from konlpy.tag import Komoran
 
+# 롤 0
+# 오버워치 1
+# 배그 2
+# 로스트아크 3
+custom_encoidng = {
+    0: '롤',
+    1: '오버워치',
+    2: '배틀그라운드',
+    3: '로스트아크'
+}
+
 # Sequence Length를 맞추기 위한 padding
 def add_padding(token_ls, max_len):
     pad = '<PAD>'
@@ -38,13 +49,16 @@ def add_padding(token_ls, max_len):
     return token_ls, seq_length_ls
 
 # 단어에 대한 idx 부여
-def convert_token_to_idx(token_ls):
+def convert_token_to_idx_from_dict(token_ls, dict):
     for tokens in token_ls:
-        yield [token2idx[token] for token in tokens]
+        yield [dict[token] if token in dict else 0 for token in tokens]
     return
 
-token2idx = defaultdict(lambda: len(token2idx))
-
+# 단어에 대한 idx 부여
+def conver_token_to_idx_for_make_dict(token_ls, dict):
+    for tokens in token_ls:
+        yield [dict[token] for token in tokens]
+    return
 
 def sort_by_sequence_length(x, y, seq_len):
     sorted_idx = np.argsort(np.array(seq_len))[::-1]
@@ -57,9 +71,9 @@ def sort_by_sequence_length(x, y, seq_len):
 
 def train():
     dataPath = "./train"
-    batch_size = 32
+    batch_size = 4
     train_ratio = 0.8
-    epochs = 2000
+    epochs = 100
     lr = 0.01
     # 토크나이저 쓸지, 그냥 띄어쓰기로 단어 분리할지 결정
     useTokenizer = True
@@ -108,8 +122,12 @@ def train():
     x_train, x_train_seq_length = add_padding(x_train, max_sequence_length)
     x_test, x_test_seq_length = add_padding(x_test, max_sequence_length)
 
-    x_train = list(convert_token_to_idx(x_train))
-    x_test = list(convert_token_to_idx(x_test))
+    # pad는 0으로 지정
+    token2idx = defaultdict(lambda: len(token2idx))
+    token2idx['<PAD>'] = 0
+
+    x_train = list(conver_token_to_idx_for_make_dict(x_train, token2idx))
+    x_test = list(conver_token_to_idx_for_make_dict(x_test, token2idx))
 
     idx2token = {val : key for key,val in token2idx.items()}
 
@@ -173,6 +191,11 @@ def train():
 
             # sequence 순서대로 정렬하기
             x_batch, y_batch, x_batch_seq_length = sort_by_sequence_length(x_batch, y_batch, x_batch_seq_length)
+            # print(idx2token)
+            # print(x_batch)
+            # print(x_batch_seq_length)
+            # print(y_batch)
+            # exit()
             scores = model(x_batch, x_batch_seq_length)
             predict = F.softmax(scores, dim=1).argmax(dim=1)
 
@@ -200,7 +223,7 @@ def train():
 
             if acc >= best_acc:
                 best_acc = acc
-                print("best_acc ", best_acc)
+                print("best_acc updated(saved)", best_acc)
                 pathDir = "./runs"
                 if not os.path.isdir(pathDir):
                     os.mkdir(pathDir)
@@ -220,7 +243,6 @@ def predict(text, label):
         idx2token = pickle.load(fr)
 
     token2idx = {val: key for key, val in idx2token.items()}
-
     targetLabel = [label]
     if useTokenizer:
         target = [Komoran().morphs(text)]
@@ -229,8 +251,7 @@ def predict(text, label):
 
     target, target_seq_length = add_padding(target, max_sequence_length)
     target_seq_length = [max_sequence_length]
-
-    target = list(convert_token_to_idx(target))
+    target = list(convert_token_to_idx_from_dict(target, token2idx))
     target = Variable(torch.LongTensor(np.array(target)))
     y_train = Variable(torch.LongTensor(np.array(targetLabel)))
     target_seq_length = Variable(torch.LongTensor(np.array(target_seq_length)))
@@ -246,7 +267,7 @@ def predict(text, label):
         bidirectional=True,
         n_category=15
     )
-    loadPath = "./runs/best_0.955.pth"
+    loadPath = "./runs/best_1.000.pth"
     model.load_state_dict(torch.load(loadPath))
     model.eval()
 
@@ -254,16 +275,7 @@ def predict(text, label):
     predict = F.softmax(scores, dim=1).argmax(dim=1)
     print(F.softmax(scores, dim=1))
     print(predict)
-    # 롤 0
-    # 오버워치 1
-    # 배그 2
-    # 로스트아크 3
-    custom_encoidng = {
-        0 : '롤',
-        1 : '오버워치',
-        2 : '배틀그라운드',
-        3 : '로스트아크'
-    }
+
     return custom_encoidng[predict.item()]
 
 if __name__ == "__main__" :
@@ -271,6 +283,6 @@ if __name__ == "__main__" :
     # train()
 
     # predict
-    print(predict("보바보바", 0))
+    print(predict("롤 하고 싶은데 컴퓨터 어떻게 사면 좋을지 말 좀 해주겠어?", 0))
 
 
