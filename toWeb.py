@@ -2,23 +2,11 @@ from selenium import webdriver
 import chromedriver_autoinstaller
 import time
 
-def goDestination(label : int):
-    url_list = dict()
-
-    with open('destination.txt', 'r', encoding='UTF-8') as file:
-        lines = file.readlines()
-        for line in lines:
-            temp_line = line.split(' ')
-            key = int(temp_line[0])
-            url = temp_line[1]
-            url_list[key] = url
-
-    print(url_list[label])
-
+def goDestination(target):
+    url = "http://search.danawa.com/dsearch.php?k1=" + target + "&module=goods&act=dispMain"
     path = chromedriver_autoinstaller.install()
-    print(path)
     driver = webdriver.Chrome(path)
-    driver.get(url_list[label])
+    driver.get(url)
 
     time.sleep(50)
 
@@ -27,4 +15,4 @@ def goDestination(label : int):
 
 
 if __name__ == '__main__':
-    goDestination(1)
+    goDestination("gtx1060")
