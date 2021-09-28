@@ -63,8 +63,7 @@ class Messenger(QWidget):
 
     def enter(self):
         self.addMessageUser(self.chatbox.text())
-        self.addMessageBot("오냐~")
-        self.makeButtonBot()
+        self.predict(self.chatbox.text())
 
     def mic(self):
         print("mic")
@@ -205,6 +204,45 @@ class Messenger(QWidget):
 
         # 6. set scroll bar to bottom
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
+
+    def predict(self, text):
+        pr = random.randint(1,17)
+
+        if pr == 1:
+            self.addMessageBot("안녕?")
+        elif pr == 2:
+            self.addMessageBot("이렇게 해줄까?")
+        elif pr == 3:
+            self.addMessageBot("이건 어때?")
+        elif pr == 4:
+            self.addMessageBot("고마워")
+        elif pr == 5:
+            self.addMessageBot("별 말씀을")
+        elif pr == 6:
+            self.addMessageBot("꺄하하")
+        elif pr == 7:
+            self.addMessageBot("재밌겠다")
+        elif pr == 8:
+            self.addMessageBot("너 이렇게 해야될 것 같은데")
+        elif pr == 9:
+            self.addMessageBot("알았어")
+        elif pr == 10:
+            self.addMessageBot("사실이야?")
+        elif pr == 11:
+            self.addMessageBot("다시 말해봐")
+        elif pr == 12:
+            self.addMessageBot("뭐라고 했어?")
+        elif pr == 13:
+            self.addMessageBot("뭐라고?")
+        elif pr == 14:
+            self.addMessageBot("오냐~")
+        elif pr == 15:
+            self.addMessageBot("알았다~")
+        elif pr == 16:
+            self.addMessageBot("안 들려~")
+        else:
+            self.addMessageBot("잘 가~")
+
 
 if __name__ == "__main__" :
     app = QApplication(sys.argv)
