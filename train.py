@@ -249,6 +249,7 @@ def predict(text, label):
     else:
         target = [text.split(" ")]
 
+    print(target)
     target, target_seq_length = add_padding(target, max_sequence_length)
     target_seq_length = [max_sequence_length]
     target = list(convert_token_to_idx_from_dict(target, token2idx))
@@ -256,6 +257,7 @@ def predict(text, label):
     y_train = Variable(torch.LongTensor(np.array(targetLabel)))
     target_seq_length = Variable(torch.LongTensor(np.array(target_seq_length)))
 
+    print(target)
     model = LSTM(
         token2idx=token2idx,
         max_sequence=max_sequence_length,
@@ -267,7 +269,7 @@ def predict(text, label):
         bidirectional=True,
         n_category=15
     )
-    loadPath = "./runs/best_1.000.pth"
+    loadPath = "./predict_model.pth"
     model.load_state_dict(torch.load(loadPath))
     model.eval()
 
@@ -275,14 +277,13 @@ def predict(text, label):
     predict = F.softmax(scores, dim=1).argmax(dim=1)
     print(F.softmax(scores, dim=1))
     print(predict)
-
-    return custom_encoidng[predict.item()]
+    return predict.item()
 
 if __name__ == "__main__" :
     # train
     # train()
 
     # predict
-    print(predict("롤 하고 싶은데 컴퓨터 어떻게 사면 좋을지 말 좀 해주겠어?", 0))
+    predict("롤 하고 싶은데 컴퓨터 어떻게 사면 좋을지 말 좀 해주겠어?", 0)
 
 

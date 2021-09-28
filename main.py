@@ -5,6 +5,8 @@ import sys
 import random
 
 # user & chicken icon by Icon8(icons8.com)
+from train import predict
+
 
 class Messenger(QWidget):
     def __init__(self):
@@ -62,8 +64,9 @@ class Messenger(QWidget):
         self.setLayout(mainLayout)
 
     def enter(self):
-        self.addMessageUser(self.chatbox.text())
-        self.predict(self.chatbox.text())
+        text = self.chatbox.text()
+        self.addMessageUser(text)
+        self.callPredict(text)
 
     def mic(self):
         print("mic")
@@ -205,15 +208,20 @@ class Messenger(QWidget):
         # 6. set scroll bar to bottom
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
 
-    def predict(self, text):
-        pr = random.randint(1,17)
-
-        if pr == 1:
-            self.addMessageBot("안녕?")
+    def callPredict(self, text):
+        pr = predict(text, 0)
+        if pr == 0:
+            self.addMessageBot("롤 컴퓨터 알려줄까?")
+            self.makeButtonBot()
+        elif pr == 1:
+            self.addMessageBot("오버워치 컴퓨터 알려줄까?")
+            self.makeButtonBot()
         elif pr == 2:
-            self.addMessageBot("이렇게 해줄까?")
+            self.addMessageBot("배그 컴퓨터 알려줄까?")
+            self.makeButtonBot()
         elif pr == 3:
-            self.addMessageBot("이건 어때?")
+            self.addMessageBot("로아 컴퓨터 알려줄까?")
+            self.makeButtonBot()
         elif pr == 4:
             self.addMessageBot("고마워")
         elif pr == 5:
