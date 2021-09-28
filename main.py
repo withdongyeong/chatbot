@@ -5,6 +5,8 @@ import sys
 import random
 
 # user & chicken icon by Icon8(icons8.com)
+from SpecChecker import getCondition
+from toWeb import goDestination
 from train import predict
 
 
@@ -21,6 +23,63 @@ class Messenger(QWidget):
         self.roundProfileSize = 30
         self.chickenImage = QPixmap('img/icons8-chicken-30.png')
         self.userImage = QPixmap('img/icons8-user-30.png')
+
+        self.customEncoding = {
+            0 : '롤',
+            1 : '오버워치',
+            2 : '배틀그라운드',
+            3 : '로스트아크'
+        }
+        self.requirements = {
+            '롤':{
+                '권장사양':{
+                    'CPU':"intel i5-3300",
+                    'GPU':"Geforce 560",
+                    'RAM':"4GB"
+                },
+                '구매추천':{
+                    'CPU': "intel i5-3300",
+                    'GPU': "Geforce 560",
+                    'RAM': "4GB"
+                }
+            },
+            '오버워치':{
+                '권장사양':{
+                    'CPU': "intel i5",
+                    'GPU': "Geforce 660",
+                    'RAM': "6GB"
+                },
+                '구매추천': {
+                    'CPU': "intel i5-3300",
+                    'GPU': "Geforce 560",
+                    'RAM': "4GB"
+                }
+            },
+            '배틀그라운드':{
+                '권장사양':{
+                    'CPU': "intel i5-6600k",
+                    'GPU': "Geforce GTX 1060 3GB",
+                    'RAM': "16GB"
+                },
+                '구매추천': {
+                    'CPU': "intel i5-3300",
+                    'GPU': "Geforce 560",
+                    'RAM': "4GB"
+                }
+            },
+            '로스트아크':{
+                '권장사양':{
+                    'CPU': "intel i5",
+                    'GPU': "Geforce RTX 2080",
+                    'RAM': "16GB"
+                },
+                '구매추천': {
+                    'CPU': "intel i5-3300",
+                    'GPU': "Geforce 560",
+                    'RAM': "4GB"
+                }
+            }
+        }
 
     def setGUI(self):
         # set title
@@ -149,7 +208,7 @@ class Messenger(QWidget):
         # 7. clear chat box
         self.chatbox.setText("")
 
-    def makeButtonBot(self):
+    def makeButtonBot(self, buttonList):
         # 1. make temp widget
         tempWidget = QWidget()
 
@@ -172,8 +231,9 @@ class Messenger(QWidget):
 
         # make choice buttons
         choiceLayout = QVBoxLayout()
-        for i in range(1, random.randint(2,5)):
-            tempChoiceButton = QPushButton("선택지"+ str(i))
+        for func, buttonName, label in buttonList:
+            tempChoiceButton = QPushButton(buttonName)
+            tempChoiceButton.clicked.connect(lambda: func(label))
             choiceLayout.addWidget(tempChoiceButton)
             tempChoiceButton.setMinimumHeight(30)
             tempChoiceButton.setStyleSheet(
@@ -208,20 +268,62 @@ class Messenger(QWidget):
         # 6. set scroll bar to bottom
         self.scrollArea.verticalScrollBar().setValue(self.scrollArea.verticalScrollBar().maximum())
 
+    def showRequirement(self, label):
+        self.addMessageBot("권장사양은\n"
+                           + "CPU : " + self.requirements[self.customEncoding[label]]['권장사양']['CPU'] + "\n"
+                           + "GPU : " + self.requirements[self.customEncoding[label]]['권장사양']['GPU'] + "\n"
+                           + "RAM : " + self.requirements[self.customEncoding[label]]['권장사양']['RAM'] + "이야")
+
     def callPredict(self, text):
         pr = predict(text, 0)
         if pr == 0:
-            self.addMessageBot("롤 컴퓨터 알려줄까?")
-            self.makeButtonBot()
+            self.addMessageBot(self.customEncoding[pr] + " 컴퓨터 알려줄까?")
+            self.addMessageBot("지금 사용중인 스펙은\n"
+                               + getCondition() + "이네")
+            self.showRequirement(pr)
+            self.addMessageBot("다나와 권장 사양 링크 볼래?")
+            buttonList = [
+                (self.cpuLink, "CPU 추천", pr),
+                (self.gpuLink, "GPU 추천", pr),
+                (self.ramLink, "RAM 추천", pr)
+            ]
+            self.makeButtonBot(buttonList)
         elif pr == 1:
-            self.addMessageBot("오버워치 컴퓨터 알려줄까?")
-            self.makeButtonBot()
+            self.addMessageBot(self.customEncoding[pr] + " 컴퓨터 알려줄까?")
+            self.addMessageBot("지금 사용중인 스펙은\n"
+                               + getCondition() + "이네")
+            self.showRequirement(pr)
+            self.addMessageBot("다나와 권장 사양 링크 볼래?")
+            buttonList = [
+                (self.cpuLink, "CPU 추천", pr),
+                (self.gpuLink, "GPU 추천", pr),
+                (self.ramLink, "RAM 추천", pr)
+            ]
+            self.makeButtonBot(buttonList)
         elif pr == 2:
-            self.addMessageBot("배그 컴퓨터 알려줄까?")
-            self.makeButtonBot()
+            self.addMessageBot(self.customEncoding[pr] + " 컴퓨터 알려줄까?")
+            self.addMessageBot("지금 사용중인 스펙은\n"
+                               + getCondition() + "이네")
+            self.showRequirement(pr)
+            self.addMessageBot("다나와 권장 사양 링크 볼래?")
+            buttonList = [
+                (self.cpuLink, "CPU 추천", pr),
+                (self.gpuLink, "GPU 추천", pr),
+                (self.ramLink, "RAM 추천", pr)
+            ]
+            self.makeButtonBot(buttonList)
         elif pr == 3:
-            self.addMessageBot("로아 컴퓨터 알려줄까?")
-            self.makeButtonBot()
+            self.addMessageBot(self.customEncoding[pr] + " 컴퓨터 알려줄까?")
+            self.addMessageBot("지금 사용중인 스펙은\n"
+                               + getCondition() + "이네")
+            self.showRequirement(pr)
+            self.addMessageBot("다나와 권장 사양 링크 볼래?")
+            buttonList = [
+                (self.cpuLink, "CPU 추천", pr),
+                (self.gpuLink, "GPU 추천", pr),
+                (self.ramLink, "RAM 추천", pr)
+            ]
+            self.makeButtonBot(buttonList)
         elif pr == 4:
             self.addMessageBot("고마워")
         elif pr == 5:
@@ -251,6 +353,20 @@ class Messenger(QWidget):
         else:
             self.addMessageBot("잘 가~")
 
+    def cpuLink(self, pr):
+        target = (self.requirements[self.customEncoding[pr]]['구매추천']['CPU'])
+        print(self.requirements[self.customEncoding[pr]]['구매추천']['CPU'])
+        goDestination(target)
+
+    def gpuLink(self, pr):
+        target = (self.requirements[self.customEncoding[pr]]['구매추천']['GPU'])
+        print(self.requirements[self.customEncoding[pr]]['구매추천']['GPU'])
+        goDestination(target)
+
+    def ramLink(self, pr):
+        target = (self.requirements[self.customEncoding[pr]]['구매추천']['RAM'])
+        print(self.requirements[self.customEncoding[pr]]['구매추천']['RAM'])
+        goDestination(target)
 
 if __name__ == "__main__" :
     app = QApplication(sys.argv)

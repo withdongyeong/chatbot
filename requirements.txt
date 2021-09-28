@@ -11,4 +11,5 @@ chardet
 
 selenium
 chromedriver_autoinstaller
+wmi
 
