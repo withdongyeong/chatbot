@@ -28,6 +28,10 @@ custom_encoidng = {
     3: '로스트아크'
 }
 
+# torch seed 고정
+torch.manual_seed(0)
+np.random.seed(0)
+
 # Sequence Length를 맞추기 위한 padding
 def add_padding(token_ls, max_len):
     pad = '<PAD>'
@@ -279,7 +283,7 @@ def predict(text, label):
 
 if __name__ == "__main__" :
     # train
-    # train()
+    train()
 
     # predict
     predict("안녕", 0)
