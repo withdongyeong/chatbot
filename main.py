@@ -40,9 +40,9 @@ class Messenger(QWidget):
                     'RAM':"4GB"
                 },
                 '구매추천':{
-                    'CPU': "intel i5-3300",
-                    'GPU': "Geforce 560",
-                    'RAM': "4GB"
+                    'CPU': "intel i5-9400f",
+                    'GPU': "Geforce gtx 1660 ti",
+                    'RAM': "DDR4-3200 8GB"
                 }
             },
             '오버워치':{
@@ -52,9 +52,9 @@ class Messenger(QWidget):
                     'RAM': "6GB"
                 },
                 '구매추천': {
-                    'CPU': "intel i5-3300",
-                    'GPU': "Geforce 560",
-                    'RAM': "4GB"
+                    'CPU': "intel i5-9400f",
+                    'GPU': "Geforce gtx 1660 ti",
+                    'RAM': "DDR4-3200 8GB"
                 }
             },
             '배틀그라운드':{
@@ -64,9 +64,9 @@ class Messenger(QWidget):
                     'RAM': "16GB"
                 },
                 '구매추천': {
-                    'CPU': "intel i5-3300",
-                    'GPU': "Geforce 560",
-                    'RAM': "4GB"
+                    'CPU': "intel i7-8700k",
+                    'GPU': "Geforce RTX 2060",
+                    'RAM': "DDR4-3200 8GB"
                 }
             },
             '로스트아크':{
@@ -76,9 +76,9 @@ class Messenger(QWidget):
                     'RAM': "16GB"
                 },
                 '구매추천': {
-                    'CPU': "intel i5-3300",
-                    'GPU': "Geforce 560",
-                    'RAM': "4GB"
+                    'CPU': "intel i7-8700k",
+                    'GPU': "Geforce RTX 2080",
+                    'RAM': "DDR4-3200 8GB"
                 }
             }
         }
@@ -242,7 +242,7 @@ class Messenger(QWidget):
         choiceLayout = QVBoxLayout()
         for func, buttonName, label in buttonList:
             tempChoiceButton = QPushButton(buttonName)
-            tempChoiceButton.clicked.connect(lambda: func(label))
+            tempChoiceButton.clicked.connect(func(label))
             choiceLayout.addWidget(tempChoiceButton)
             tempChoiceButton.setMinimumHeight(30)
             tempChoiceButton.setStyleSheet(
@@ -368,45 +368,31 @@ class Messenger(QWidget):
             self.addMessageBot("고마워")
         elif pr == 5:
             self.addMessageBot("별 말씀을")
-        elif pr == 6:
-            self.addMessageBot("꺄하하")
-        elif pr == 7:
-            self.addMessageBot("재밌겠다")
-        elif pr == 8:
-            self.addMessageBot("너 이렇게 해야될 것 같은데")
-        elif pr == 9:
-            self.addMessageBot("알았어")
-        elif pr == 10:
-            self.addMessageBot("사실이야?")
-        elif pr == 11:
-            self.addMessageBot("다시 말해봐")
-        elif pr == 12:
-            self.addMessageBot("뭐라고 했어?")
-        elif pr == 13:
-            self.addMessageBot("뭐라고?")
-        elif pr == 14:
-            self.addMessageBot("오냐~")
-        elif pr == 15:
-            self.addMessageBot("알았다~")
-        elif pr == 16:
-            self.addMessageBot("안 들려~")
         else:
-            self.addMessageBot("잘 가~")
+            self.addMessageBot("고려하지 않은 분석이야, 확인해봐")
 
     def cpuLink(self, pr):
-        target = (self.requirements[self.customEncoding[pr]]['구매추천']['CPU'])
-        print(self.requirements[self.customEncoding[pr]]['구매추천']['CPU'])
-        goDestination(target)
+        # 이렇게 만든 이유는, 버튼마다 다른 argument를 전달하고 싶은데
+        # 버튼을 생성할 때, 함수를 connect하는 순간 작업(링크 띄우는일)을 하지 않도록 하기 위함
+        def workCPU():
+            target = (self.requirements[self.customEncoding[pr]]['구매추천']['CPU'])
+            print(self.requirements[self.customEncoding[pr]]['구매추천']['CPU'])
+            goDestination(target)
+        return workCPU
 
     def gpuLink(self, pr):
-        target = (self.requirements[self.customEncoding[pr]]['구매추천']['GPU'])
-        print(self.requirements[self.customEncoding[pr]]['구매추천']['GPU'])
-        goDestination(target)
+        def workGPU():
+            target = (self.requirements[self.customEncoding[pr]]['구매추천']['GPU'])
+            print(self.requirements[self.customEncoding[pr]]['구매추천']['GPU'])
+            goDestination(target)
+        return workGPU
 
     def ramLink(self, pr):
-        target = (self.requirements[self.customEncoding[pr]]['구매추천']['RAM'])
-        print(self.requirements[self.customEncoding[pr]]['구매추천']['RAM'])
-        goDestination(target)
+        def workRAM():
+            target = (self.requirements[self.customEncoding[pr]]['구매추천']['RAM'])
+            print(self.requirements[self.customEncoding[pr]]['구매추천']['RAM'])
+            goDestination(target)
+        return workRAM
 
 if __name__ == "__main__" :
     app = QApplication(sys.argv)
