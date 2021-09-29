@@ -136,9 +136,6 @@ class Messenger(QWidget):
         self.addMessageUser(text)
         self.callPredict(text)
 
-    def mic(self):
-        print("mic")
-
     def addMessageBot(self, text):
         self.makeMessageBox(text, "bot")
 
