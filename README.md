@@ -11,8 +11,11 @@
 
 추천하여 링크를 제공하는 챗봇 개발
 
+# 요구사양
+    pip install -r requirements.txt
+
 # 샘플 이미지
-![img.png](img/sample_main_image.png)
+![img.png](img/img.png)
 
 
 

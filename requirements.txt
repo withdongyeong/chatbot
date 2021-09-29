@@ -1,8 +1,6 @@
 # pip install -r requirements.txt
 
 PyQt5
-torchtext
-matplotlib
 
 konlpy
 # need to downgrade tweepy
