@@ -31,6 +31,8 @@ Jpype : https://www.lfd.uci.edu/~gohlke/pythonlibs/#jpype
   pip install <.whl파일 경로>
 와 같은 명령어를 사용하여 설치한다
 
+나머지 요구사양은 다음 명령어로 설치한다
+
     pip install -r requirements.txt
 
 
