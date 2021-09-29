@@ -1,3 +1,5 @@
+import os
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
@@ -269,6 +271,25 @@ class Messenger(QWidget):
                            + "GPU : " + self.requirements[self.customEncoding[label]]['권장사양']['GPU'] + "\n"
                            + "RAM : " + self.requirements[self.customEncoding[label]]['권장사양']['RAM'] + "이야")
 
+    def writeMisunderstandings(self, target):
+        dir = "./unk"
+        if not os.path.isdir(dir):
+            os.mkdir(dir)
+        # 파일 읽기
+        fname = dir + os.sep + "misunderstandings.txt"
+        f = open(fname, 'a+', encoding='UTF-8')
+        text = ""
+        while True:
+            line = f.readline()
+            if not line:
+                break
+            text += line
+
+        # 맨 마지막 줄에 추가하기
+        text += target + "\n"
+        f.writelines(text)
+        f.close()
+
     def callPredict(self, text):
         pr, score = predict(text, 0)
         if score < 0.95:
@@ -279,6 +300,8 @@ class Messenger(QWidget):
                 self.addMessageBot("다시 말해줄래?")
             else:
                 self.addMessageBot("이해 못 했어")
+            # 기록하기
+            self.writeMisunderstandings(text)
             return
         
         if pr == 0:
