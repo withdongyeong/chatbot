@@ -147,7 +147,7 @@ def train():
         n_layers = 2,
         dropout = 0.2,
         bidirectional = True,
-        n_category = 15
+        n_category = 6
     )
 
     def adjust_learning_rate(optimizer, epoch, init_lr=0.001, lr_decay_epoch=10):
@@ -265,7 +265,7 @@ def predict(text, label):
         n_layers=2,
         dropout=0.5,
         bidirectional=True,
-        n_category=15
+        n_category=6
     )
     loadPath = "./predict_model.pth"
     model.load_state_dict(torch.load(loadPath))
@@ -282,6 +282,6 @@ if __name__ == "__main__" :
     # train()
 
     # predict
-    predict("롤", 0)
+    predict("안녕", 0)
 
 

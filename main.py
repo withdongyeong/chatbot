@@ -120,9 +120,9 @@ class Messenger(QWidget):
         self.setLayout(mainLayout)
 
         # hi
-        self.hi()
+        self.startHi()
 
-    def hi(self):
+    def startHi(self):
         case = random.randint(0, 2)
         if case == 0:
             self.addMessageBot("안녕, 게임 컴퓨터 견적 알려주는 다알아라고해\n어떤 걸 알려줄까?")
@@ -362,11 +362,29 @@ class Messenger(QWidget):
             ]
             self.makeButtonBot(buttonList)
         elif pr == 4:
-            self.addMessageBot("고마워")
+            self.greeting()
         elif pr == 5:
-            self.addMessageBot("별 말씀을")
+            self.thanks()
         else:
             self.addMessageBot("고려하지 않은 분석이야, 확인해봐")
+
+    def greeting(self):
+        case = random.randint(0, 2)
+        if case == 0:
+            self.addMessageBot("안녕!")
+        elif case == 1:
+            self.addMessageBot("안녕안녕~")
+        elif case == 2:
+            self.addMessageBot("그래 안녕~")
+
+    def thanks(self):
+        case = random.randint(0, 2)
+        if case == 0:
+            self.addMessageBot("별말씀을~")
+        elif case == 1:
+            self.addMessageBot("도움이 되서 다행이야~")
+        elif case == 2:
+            self.addMessageBot("잘했지?")
 
     def cpuLink(self, pr):
         # 이렇게 만든 이유는, 버튼마다 다른 argument를 전달하고 싶은데
