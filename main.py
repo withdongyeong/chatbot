@@ -119,6 +119,18 @@ class Messenger(QWidget):
 
         self.setLayout(mainLayout)
 
+        # hi
+        self.hi()
+
+    def hi(self):
+        case = random.randint(0, 2)
+        if case == 0:
+            self.addMessageBot("안녕, 게임 컴퓨터 견적 알려주는 다알아라고해\n어떤 걸 알려줄까?")
+        elif case == 1:
+            self.addMessageBot("반가워, 게임 컴퓨터 견적 알려주는 다알아야\n뭐가 궁금해?")
+        elif case == 2:
+            self.addMessageBot("환영해, 게임 컴퓨터 견적 알려주는 다알아야\n무엇을 알려줄까?")
+
     def enter(self):
         text = self.chatbox.text()
         self.addMessageUser(text)
